@@ -1,6 +1,6 @@
 # GOHOST
 
-Simple CLI tool to host HTML5 project locally for WebGL game development.
+Personal CLI tool for HTML5 games local testing.
 
 ## Usage
 
@@ -13,7 +13,12 @@ go install github.com/alexplisov/gohost
 Run using:
 
 ```sh
-gohost -path <directory> [-address <your_local_address>]
+gohost .
 ```
 
-Then access via browser using specified address or default `localhost:3000`.
+Then access via browser using default http://localhost:1337.
+
+## TODO
+
+ - [ ] Custom headers support
+
