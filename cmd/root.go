@@ -1,37 +1,36 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
 	"fmt"
+	"net"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/spf13/cobra"
 )
 
-// rootCmd represents the root command
+var port uint16
+
 var rootCmd = &cobra.Command{
-	Use:   "gohost <path_to_folder>",
+	Use:   "gohost <path>",
 	Short: "Start a local static file server",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		path := args[0]
-		// FIXME: change to dynamic
-		port := 1337
-
 		fsys := os.DirFS(path)
 		handler := http.FileServerFS(fsys)
 
 		fmt.Printf("Local server for directory %s started on http://localhost:%d/\n", path, port)
 
-		http.ListenAndServe("localhost:1337", handler)
+		if err := http.ListenAndServe(net.JoinHostPort("localhost", strconv.FormatUint(uint64(port), 10)), handler); err != nil {
+			fmt.Println(err)
+		}
 	},
 }
 
 func init() {
-	// TODO: add port flag
+	rootCmd.PersistentFlags().Uint16Var(&port, "port", 1337, "Optional. Port to listen on")
 }
 
 func Execute() {
